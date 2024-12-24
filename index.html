@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>QuickResume</title>
+    <title>CraftResume</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -72,7 +72,7 @@
 </head>
 <body>
     <header>
-        <h1>QuickResume</h1>
+        <h1>CraftResume</h1>
         <p>Create a professional resume in minutes</p>
     </header>
 
@@ -118,34 +118,30 @@
             const workExperience = document.getElementById('workExperience').value;
             const projects = document.getElementById('projects').value;
             const achievements = document.getElementById('achievements').value;
-
-            const response = await fetch('/generate', {
+    
+            const response = await fetch('http://127.0.0.1:5000/generate', {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ education, workExperience, projects, achievements })
+                body: JSON.stringify({ education, workExperience, projects, achievements }),
             });
-
-            const data = await response.json();
-            const outputDiv = document.getElementById('generatedContent');
-            outputDiv.innerHTML = `
-                <h3>Education</h3>
-                <p>${data.education}</p>
-                <h3>Work Experience</h3>
-                <p>${data.workExperience}</p>
-                <h3>Projects</h3>
-                <p>${data.projects}</p>
-                <h3>Achievements</h3>
-                <p>${data.achievements}</p>
-            `;
-
-            document.getElementById('output').style.display = 'block';
-        });
-
-        document.getElementById('downloadPdf').addEventListener('click', () => {
-            window.print();
+    
+            if (response.ok) {
+                const blob = await response.blob(); // Receive the PDF as a Blob
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'resume.pdf';
+                document.body.appendChild(a);
+                a.click();
+                a.remove();
+                window.URL.revokeObjectURL(url);
+            } else {
+                console.error('Failed to generate the PDF.');
+            }
         });
     </script>
+    
 </body>
 </html>
