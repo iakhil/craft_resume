@@ -6,6 +6,7 @@ import os
 from jinja2 import Template
 
 app = Flask(__name__)
+CORS(app)
 
 LATEX_TEMPLATE = r"""
 \documentclass[10pt, letterpaper]{article}
