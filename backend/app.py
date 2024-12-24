@@ -44,10 +44,10 @@ GitHub: \href{ https://github.com/{{ github }} }{ {{ github }} }
 def generate_resume():
     data = request.json or {}
 
-    Create a Jinja2 template
+    #  Create a Jinja2 template
     template = Template(LATEX_TEMPLATE)
 
-# Render the template using .render()
+    #  Render the template using .render()
     latex_code = template.render(
         name=data.get('name', 'Your Name'),
         email=data.get('email', 'youremail@domain.com'),
